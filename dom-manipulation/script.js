@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
         saveQuotes(localQuotes);
         populateCategories();
         filterQuotes();
-        showNotification("Quotes updated from server.");
+        showNotification("Quotes synced with server!");
       }
     });
     // Simulate sending new local quotes to the server
