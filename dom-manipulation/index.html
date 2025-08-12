@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Dynamic Quote Generator — Storage & JSON</title>
+    <title>Dynamic Quote Generator — Category Filter</title>
     <style>
       body {
         font-family: "Segoe UI", Tahoma, sans-serif;
@@ -131,7 +131,7 @@
       <header>
         <h1>Dynamic Quote Generator</h1>
         <div class="tools">
-          <button id="exportBtn" class="secondary">Export Quotes</button>
+          <button id="exportBtn" class="secondary">Export JSON</button>
           <input id="importFile" type="file" accept=".json" />
         </div>
       </header>
@@ -140,6 +140,10 @@
         <div class="controls">
           <label for="categorySelect">Category:</label>
           <select id="categorySelect"></select>
+
+          <label for="categoryFilter">Filter:</label>
+          <select id="categoryFilter"></select>
+
           <button id="newQuote" class="primary">Show New Quote</button>
           <button
             id="showLast"
@@ -152,13 +156,12 @@
 
         <div id="quoteDisplay" aria-live="polite"></div>
         <div class="meta" id="quoteMeta"></div>
-        <small class="hint"
-          >Added quotes are persisted in localStorage. Last viewed quote only
-          stored in this session.</small
-        >
+        <small class="hint">
+          Added quotes are persisted in localStorage. Last viewed quote and
+          category filter are stored across sessions.
+        </small>
       </div>
 
-      <!-- Add-quote form will be dynamically created by createAddQuoteForm() -->
       <div id="formAnchor" class="section"></div>
 
       <div class="section">
