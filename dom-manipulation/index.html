@@ -112,6 +112,12 @@
         gap: 8px;
         align-items: center;
       }
+      .filter-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
       small.hint {
         color: #666;
         display: block;
@@ -131,16 +137,13 @@
       <header>
         <h1>Dynamic Quote Generator</h1>
         <div class="tools">
-          <button id="exportBtn" class="secondary">Export JSON</button>
+          <button id="exportBtn" class="secondary">Export Quotes</button>
           <input id="importFile" type="file" accept=".json" />
         </div>
       </header>
 
       <div class="section">
         <div class="controls">
-          <label for="categorySelect">Category:</label>
-          <select id="categorySelect"></select>
-
           <label for="categoryFilter">Filter:</label>
           <select id="categoryFilter"></select>
 
@@ -158,10 +161,11 @@
         <div class="meta" id="quoteMeta"></div>
         <small class="hint">
           Added quotes are persisted in localStorage. Last viewed quote and
-          category filter are stored across sessions.
+          selected filter are saved.
         </small>
       </div>
 
+      <!-- Add-quote form is inserted here by createAddQuoteForm() -->
       <div id="formAnchor" class="section"></div>
 
       <div class="section">
