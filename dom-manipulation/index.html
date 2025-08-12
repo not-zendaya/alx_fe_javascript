@@ -1,112 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dynamic Quote Generator</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dynamic Quote Generator — Storage & JSON</title>
     <style>
       body {
         font-family: "Segoe UI", Tahoma, sans-serif;
-        background: linear-gradient(to right, #a18cd1, #fbc2eb);
-        color: #333;
+        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        padding: 36px;
         display: flex;
         justify-content: center;
         align-items: flex-start;
         min-height: 100vh;
-        padding: 30px;
+        color: #333;
       }
-
       .container {
-        background: white;
+        background: #fff;
+        width: 100%;
+        max-width: 900px;
         border-radius: 12px;
-        padding: 20px 30px;
-        max-width: 500px;
-        width: 100%;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 20px 24px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
       }
-
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
       h1 {
-        text-align: center;
         color: #5e4b8b;
+        margin: 0;
+        font-size: 1.4rem;
       }
-
+      .controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
       select,
-      input,
-      button {
-        padding: 10px;
-        margin: 8px 0;
-        width: 100%;
-        border: 1px solid #ccc;
+      button,
+      input[type="file"] {
+        padding: 10px 12px;
         border-radius: 8px;
+        border: 1px solid #ddd;
         font-size: 14px;
-        box-sizing: border-box;
-        transition: border-color 0.3s;
       }
-
-      select:focus,
-      input:focus {
-        outline: none;
-        border-color: #a18cd1;
-      }
-
-      button {
-        background: #a18cd1;
+      button.primary {
+        background: #5e4b8b;
         color: white;
         border: none;
         cursor: pointer;
-        font-weight: bold;
-        transition: background 0.3s;
       }
-
-      button:hover {
-        background: #8e75c9;
-      }
-
-      #quoteDisplay {
-        margin: 20px 0;
-        font-size: 1.2em;
-        font-style: italic;
-        border-left: 4px solid #a18cd1;
-        padding-left: 15px;
-        background: #faf7ff;
-        border-radius: 8px;
-        padding: 15px;
-        min-height: 60px;
-      }
-
-      .quote-category {
-        font-size: 0.9em;
-        color: #777;
-        margin-top: 5px;
-      }
-
-      h3 {
-        margin-top: 20px;
+      button.secondary {
+        background: #fff;
         color: #5e4b8b;
+        border: 1px solid #d6c6f0;
+        cursor: pointer;
+      }
+      #quoteDisplay {
+        margin-top: 18px;
+        padding: 16px;
+        background: #faf7ff;
+        border-left: 5px solid #a18cd1;
+        border-radius: 8px;
+        min-height: 70px;
+        font-style: italic;
+      }
+      .meta {
+        margin-top: 8px;
+        color: #666;
+        font-size: 0.9rem;
+      }
+      .section {
+        margin-top: 20px;
+      }
+      #quotesList {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 12px;
+      }
+      .quote-card {
+        background: #fff;
+        border: 1px solid #f0eaff;
+        padding: 12px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      }
+      .quote-card p {
+        margin: 0 0 8px 0;
+      }
+      .quote-card .cat {
+        font-size: 0.85rem;
+        color: #7b6aa3;
+      }
+      .quote-card button {
+        margin-top: 8px;
+        padding: 6px 8px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        background: #ff6b6b;
+        color: white;
+      }
+      .tools {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      small.hint {
+        color: #666;
+        display: block;
+        margin-top: 6px;
+      }
+      @media (max-width: 600px) {
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Dynamic Quote Generator</h1>
+      <header>
+        <h1>Dynamic Quote Generator</h1>
+        <div class="tools">
+          <button id="exportBtn" class="secondary">Export JSON</button>
+          <input id="importFile" type="file" accept=".json" />
+        </div>
+      </header>
 
-      <div>
-        <label for="categorySelect">Select Category:</label>
-        <select id="categorySelect"></select>
-        <button id="newQuote">Show New Quote</button>
+      <div class="section">
+        <div class="controls">
+          <label for="categorySelect">Category:</label>
+          <select id="categorySelect"></select>
+          <button id="newQuote" class="primary">Show New Quote</button>
+          <button
+            id="showLast"
+            class="secondary"
+            title="Show the last viewed quote this session"
+          >
+            Show Last Viewed
+          </button>
+        </div>
+
+        <div id="quoteDisplay" aria-live="polite"></div>
+        <div class="meta" id="quoteMeta"></div>
+        <small class="hint"
+          >Added quotes are persisted in localStorage. Last viewed quote only
+          stored in this session.</small
+        >
       </div>
 
-      <div id="quoteDisplay"></div>
+      <!-- Add-quote form will be dynamically created by createAddQuoteForm() -->
+      <div id="formAnchor" class="section"></div>
 
-      <h3>Add a New Quote</h3>
-      <div>
-        <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-        <input
-          id="newQuoteCategory"
-          type="text"
-          placeholder="Enter quote category"
-        />
-        <button id="addQuoteBtn">Add Quote</button>
+      <div class="section">
+        <h3>All Quotes</h3>
+        <div id="quotesList"></div>
       </div>
     </div>
 
