@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showRandomQuote();
   }
 
-  function syncWithServer() {
+  function syncQuotes() {
     fetchQuotesFromServer().then((serverQuotes) => {
       const localQuotes = getQuotes();
       let updated = false;
@@ -488,6 +488,6 @@ document.addEventListener("DOMContentLoaded", () => {
     showRandomQuote();
 
     // start periodic sync with server
-    setInterval(syncWithServer, 15000);
+    setInterval(syncQuotes, 15000);
   })();
 });
