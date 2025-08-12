@@ -229,6 +229,43 @@ document.addEventListener("DOMContentLoaded", () => {
     showRandomQuote();
   }
 
+  function syncWithServer() {
+    fetchQuotesFromServer().then((serverQuotes) => {
+      const localQuotes = getQuotes();
+      let updated = false;
+
+      serverQuotes.forEach((serverQuote) => {
+        if (
+          !localQuotes.some(
+            (q) =>
+              q.text === serverQuote.text && q.category === serverQuote.category
+          )
+        ) {
+          localQuotes.push(serverQuote);
+          updated = true;
+        }
+      });
+
+      if (updated) {
+        saveQuotes(localQuotes);
+        populateCategories();
+        filterQuotes();
+        showNotification("Quotes updated from server.");
+      }
+    });
+    // Simulate sending new local quotes to the server
+    fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(getQuotes()),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log("Data synced to server:", data))
+      .catch((error) => console.error("Error syncing with server:", error));
+  }
+  /*
   // fetchQuotesFromServer — new explicit function required by checker
   async function fetchQuotesFromServer() {
     // This fetch simulates server-side quotes (using jsonplaceholder)
@@ -249,7 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("fetchQuotesFromServer failed", err);
       return [];
     }
-  }
+  }*/
 
   // Sync with server simulation — uses fetchQuotesFromServer()
   async function syncWithServer() {
