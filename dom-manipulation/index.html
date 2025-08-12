@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Quote Generator</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        background: linear-gradient(to right, #a18cd1, #fbc2eb);
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        padding: 30px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 30px;
+        max-width: 500px;
+        width: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #5e4b8b;
+      }
+
+      select,
+      input,
+      button {
+        padding: 10px;
+        margin: 8px 0;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        box-sizing: border-box;
+        transition: border-color 0.3s;
+      }
+
+      select:focus,
+      input:focus {
+        outline: none;
+        border-color: #a18cd1;
+      }
+
+      button {
+        background: #a18cd1;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
+
+      button:hover {
+        background: #8e75c9;
+      }
+
+      #quoteDisplay {
+        margin: 20px 0;
+        font-size: 1.2em;
+        font-style: italic;
+        border-left: 4px solid #a18cd1;
+        padding-left: 15px;
+        background: #faf7ff;
+        border-radius: 8px;
+        padding: 15px;
+        min-height: 60px;
+      }
+
+      .quote-category {
+        font-size: 0.9em;
+        color: #777;
+        margin-top: 5px;
+      }
+
+      h3 {
+        margin-top: 20px;
+        color: #5e4b8b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Dynamic Quote Generator</h1>
+
+      <div>
+        <label for="categorySelect">Select Category:</label>
+        <select id="categorySelect"></select>
+        <button id="newQuote">Show New Quote</button>
+      </div>
+
+      <div id="quoteDisplay"></div>
+
+      <h3>Add a New Quote</h3>
+      <div>
+        <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+        <input
+          id="newQuoteCategory"
+          type="text"
+          placeholder="Enter quote category"
+        />
+        <button id="addQuoteBtn">Add Quote</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
